@@ -8,7 +8,7 @@ using TatBlog.WebApp.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 {
     builder
-        .CongigureMvc()
+        .ConfigureMvc()
         .ConfigureServices();
 }
 

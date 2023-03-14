@@ -7,6 +7,7 @@ using System.Linq.Dynamic.Core;
 using TatBlog.Core.Collections;
 using Microsoft.EntityFrameworkCore;
 using TatBlog.Core.Contracts;
+using static TatBlog.Core.Contracts.IPagedList;
 
 namespace TatBlog.Services.Extensions
 {
@@ -14,7 +15,7 @@ namespace TatBlog.Services.Extensions
     {
         public static string GetOrderExpression(
             this IPagingParams pagingParams,
-            string defaultColumn = "Id")
+            string defaultColumn = "ID")
         {
             var column = string.IsNullOrWhiteSpace(pagingParams.SortColumn)
                 ? defaultColumn
@@ -25,7 +26,7 @@ namespace TatBlog.Services.Extensions
             return $"{column}  {order}";
         }
 
-        public static async Task<Core.Contracts.IPagedList<T>> ToPagedListAsync<T>(
+        public static async Task<IPagedList<T>> ToPagedListAsync<T>(
         this IQueryable<T> source,
         IPagingParams pagingParams,
         CancellationToken cancellationToken = default)
@@ -44,7 +45,7 @@ namespace TatBlog.Services.Extensions
                 totalCount);
         }
 
-        public static async Task<Core.Contracts.IPagedList<T>> ToPagedListAsync<T>(
+        public static async Task<IPagedList<T>> ToPagedListAsync<T>(
             this IQueryable<T> source,
             int pageNumber = 1,
             int pageSize = 10,

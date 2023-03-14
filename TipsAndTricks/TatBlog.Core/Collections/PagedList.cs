@@ -74,20 +74,14 @@ public class PagedList<T> : IPagedList<T>
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        throw new NotImplementedException();
+        return GetEnumerator();
     }
 
     public T this[int index] => _subset[index];
 
     public virtual int Count => _subset.Count;
 
-    int IPagedList.HasPreviousPage => throw new NotImplementedException();
 
-    int IPagedList.HasNextPage => throw new NotImplementedException();
-
-    int IPagedList.IsFirstPage => throw new NotImplementedException();
-
-    int IPagedList.IsLastPage => throw new NotImplementedException();
 
     #endregion
 

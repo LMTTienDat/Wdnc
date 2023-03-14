@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
 using TatBlog.Data.Contexts;
 using TatBlog.Data.Seeders;
 using TatBlog.Services.Blogs;
 
 
 namespace TatBlog.WebApp.Extensions;
+public static class WebApplicationExtensions
+{
 
 public static WebApplicationBuilder ConfigureMvc(
     this WebApplicationBuilder builder)
@@ -61,7 +62,7 @@ public static IApplicationBuilder UseDataSeeder(
     {
         scope.ServiceProvider
             .GetRequiredService<IDataSeeder>()
-            .Initialize();
+            .Intitialize();
     }
     catch (Exception ex)
     {
@@ -73,3 +74,4 @@ public static IApplicationBuilder UseDataSeeder(
     return app;
 }
 
+}

@@ -9,7 +9,7 @@ using TatBlog.Core.DTO;
 using TatBlog.Data.Contexts;
 using TatBlog.Core.Contracts;
 using TatBlog.Services.Extensions;
-
+using static TatBlog.Core.Contracts.IPagedList;
 
 namespace TatBlog.Services.Blogs
 {
@@ -109,7 +109,7 @@ namespace TatBlog.Services.Blogs
                 Description = x.Description,
                 PostCount = x.Posts.Count(p => p.Published)
             });
-            return (IPagedList<TagItem>)await tagQuery.ToPagedListAsync(pagingParams, cancellationToken);
+            return await tagQuery.ToPagedListAsync(pagingParams, cancellationToken);
         }
         public async Task<Tag> GetTagBySlugAsync(string slug, CancellationToken cancellationToken = default)
         {
@@ -193,6 +193,19 @@ namespace TatBlog.Services.Blogs
                 cancellationToken);
         }
 
-        
+        Task<List<Post>> IBlogRepository.GetPopularArticlesAsync(int numPosts, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IList<CategoryItem>> GetCategoriesAsync(bool showOnMenu = false, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IPagedList<TagItem>> GetPagedTagsAsync(IPagingParams pagingParams, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

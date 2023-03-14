@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TatBlog.Core.DTO;
 using TatBlog.Services.Blogs;
 
@@ -14,7 +14,7 @@ namespace TatBlog.WebApp.Components
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var categories = await _blogRepository.GetCategoryItemsAsync();
+            var categories = await _blogRepository.GetCategoriesAsync();
             return View(categories);
         }
 

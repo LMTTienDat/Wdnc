@@ -43,9 +43,9 @@
                     <div class="text-end">
                         <a asp-controller="Blog"
                            asp-action="Post"
-                           asp-route-year="@Model.PostsDate.Year"
-                           asp-route-month="@Model.PostsDate.Month"
-                           asp-route-day="@Model.PostsDate.Day"
+                           asp-route-year="@Model.PostedDate.Year"
+                           asp-route-month="@Model.PostedDate.Month"
+                           asp-route-day="@Model.PostedDate.Day"
                            asp-route-sluf="@Model.UrlSlug"
                            class="btn btn-primary"
                            title="@Model.Title">

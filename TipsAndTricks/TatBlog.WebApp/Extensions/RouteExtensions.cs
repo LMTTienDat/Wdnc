@@ -1,6 +1,7 @@
 ﻿
 namespace TatBlog.WebApp.Extensions;
-
+public static class RouteExtensions
+{
 public static IEndpointRouteBuilder UseBlogRoutes(
     this IEndpointRouteBuilder endpoints)
 {
@@ -25,4 +26,5 @@ public static IEndpointRouteBuilder UseBlogRoutes(
         pattern: "{controller=Blog}/{action=Index}/{id?}");
 
     return endpoints;
+}
 }

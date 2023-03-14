@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TatBlog.Core.Contracts
 {
-    internal interface IPagedList
+    public interface IPagedList
     {
         int PageCount { get; }
         int TotalItemCount { get; }
@@ -14,12 +14,12 @@ namespace TatBlog.Core.Contracts
         int PageIndex { get; }
         int PageNumber { get; }
         int PageSize { get; }
-        int HasPreviousPage { get; }
+        bool HasPreviousPage { get; }
 
-        int HasNextPage { get; }
-        int IsFirstPage { get; }
+        bool HasNextPage { get; }
+        bool IsFirstPage { get; }
 
-        int IsLastPage { get; }
+        bool IsLastPage { get; }
         int FirstItemIndex { get; }
         int LastItemIndex { get; }
 

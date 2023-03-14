@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 using TatBlog.Core.Contracts;
 using TatBlog.Core.DTO;
 using TatBlog.Core.Entities;
-using TatBlog.Core.Contracts;
-
-
+using static TatBlog.Core.Contracts.IPagedList;
 
 namespace TatBlog.Services.Blogs;
 

@@ -10,7 +10,7 @@ public interface IPagingParams
 {
     int PageSize { get; set; }
     int PageNumber { get; set; }
-    int SortColumn { get; set; }
-    int SortOrder { get; set; }
+    string SortColumn { get; set; }
+    string SortOrder { get; set; }
 
 }

@@ -69,7 +69,7 @@ public class PagedList<T> : IPagedList<T>
 
     public IEnumerator<T> GetEnumerator()
     {
-        return GetEnumerator();
+        return _subset.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()

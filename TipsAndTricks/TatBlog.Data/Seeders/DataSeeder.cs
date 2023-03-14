@@ -7,6 +7,7 @@ using TatBlog.Core.Entities;
 using TatBlog.Data.Contexts;
 using TatBlog.Data.Seeders;
 
+
 namespace TatBlog.Data.Seeders;
 
 public class DataSeeder : IDataSeeder

@@ -27,7 +27,7 @@ public static WebApplicationBuilder ConfigureServices(
     builder.Services.AddScoped<IBlogRepository, BlogRepository>();
     builder.Services.AddScoped<IDataSeeder, DataSeeder>();
 
-    return builder;
+        return builder;
 
 }
 

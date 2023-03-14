@@ -19,4 +19,10 @@ var app = builder.Build();
     app.UseDataSeeder();
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<IDataSeeder>();
+    seeder.Intitialize();
+}
+
 app.Run();

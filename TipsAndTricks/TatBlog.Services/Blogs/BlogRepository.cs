@@ -96,6 +96,25 @@ namespace TatBlog.Services.Blogs
                 })
                 .ToListAsync(cancellationToken);
         }
+        public async Task<IList<AuthorItem>> GetAuthorsAsync(
+            CancellationToken cancellationToken = default)
+        {
+            IQueryable<Author> author = _context.Set<Author>();
+            return await author
+            .OrderBy(x => x.FullName)
+            .Select(x => new AuthorItem()
+            {
+                Id = x.Id,
+                FullName = x.FullName,
+                UrlSlug = x.UrlSlug,
+                Email = x.Email,
+                ImageUrl = x.ImageUrl,
+                JoinedDate = x.JoinedDate,
+                Notes = x.Notes,
+                PostCount = x.Posts.Count(p => p.Published)
+            }).ToListAsync(cancellationToken);
+
+        }
         public async Task<IPagedList<TagItem>> GetPagedTagAsync(
             IPagingParams pagingParams,
             CancellationToken cancellationToken = default)
@@ -161,10 +180,10 @@ namespace TatBlog.Services.Blogs
             {
                 posts = posts.Where(x => x.PostedDate.Month == postQuery.Month);
             }
-            if (postQuery.PublishedOnly)
+/*            if (condition.PublishedOnly)
             {
-                posts = posts.Where(x => x.Published);
-            }
+                posts = posts.Where(x => x.Published == true);
+            }*/
             if (!string.IsNullOrWhiteSpace(postQuery.AuthorSlug))
             {
                 posts = posts.Where(x => x.Author.UrlSlug == postQuery.AuthorSlug);

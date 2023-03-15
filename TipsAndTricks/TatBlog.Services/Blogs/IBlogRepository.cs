@@ -33,6 +33,8 @@ public interface IBlogRepository
     Task<IList<CategoryItem>> GetCategoriesAsync(
         bool showOnMenu = false,
         CancellationToken cancellationToken = default);
+    Task<IList<AuthorItem>> GetAuthorsAsync(
+            CancellationToken cancellationToken = default);
 
     Task<IPagedList<TagItem>> GetPagedTagsAsync(
         IPagingParams pagingParams,

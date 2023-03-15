@@ -21,6 +21,10 @@ public interface IBlogRepository
     Task<List<Post>> GetPopularArticlesAsync(
         int numPosts,
         CancellationToken cancellationToken = default);
+    Task<Post> GetPostByIdAsync(
+       int id,
+       bool v,
+        CancellationToken cancellationToken = default);
 
     Task<bool> IsPostSlugExistedAsync(
         int postId, string slug,
@@ -29,6 +33,10 @@ public interface IBlogRepository
     Task IncreaseViewCountAsync(
         int postId,
         CancellationToken cancellationToken = default);
+
+    Task CreateOrUpdatePostAsync(
+     int postId,
+     CancellationToken cancellationToken = default);
 
     Task<IList<CategoryItem>> GetCategoriesAsync(
         bool showOnMenu = false,
@@ -47,5 +55,5 @@ public interface IBlogRepository
     int pageNumber = 1,
     int pageSize = 10,
     CancellationToken cancellationToken = default);
-
+    
 }

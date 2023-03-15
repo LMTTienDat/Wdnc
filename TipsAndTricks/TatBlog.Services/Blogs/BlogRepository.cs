@@ -212,6 +212,35 @@ namespace TatBlog.Services.Blogs
                 cancellationToken);
         }
 
+        public async Task<Post> GetPostByIdAsync(
+            int id,
+            bool v,
+            CancellationToken cancellationToken = default)
+        {
+            IQueryable<Post> postsQuery = _context.Set<Post>();
+            if (id > 0)
+            {
+                postsQuery = postsQuery.Where(x => x.Id == id);
+            }
+            return await postsQuery.FirstOrDefaultAsync(cancellationToken);
+
+        }
+
+        public async Task<Post> CreateOrUpdatePostAsync(
+           int postId,
+           CancellationToken cancellationToken = default)
+        {
+            IQueryable<Post> postsQuery = _context.Set<Post>();
+            if (postId > 0)
+            {
+                postsQuery = postsQuery.Where(x => x.Id == postId);
+            }
+            return await postsQuery.FirstOrDefaultAsync(cancellationToken);
+
+        }
+
+
+
         Task<List<Post>> IBlogRepository.GetPopularArticlesAsync(int numPosts, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
@@ -223,6 +252,11 @@ namespace TatBlog.Services.Blogs
         }
 
         public Task<IPagedList<TagItem>> GetPagedTagsAsync(IPagingParams pagingParams, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task IBlogRepository.CreateOrUpdatePostAsync(int postId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

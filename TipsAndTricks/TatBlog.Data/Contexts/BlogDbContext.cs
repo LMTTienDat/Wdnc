@@ -19,12 +19,12 @@ public class BlogDbContext : DbContext
 
     public DbSet<Tag> Tags { get; set; }
 
-    protected override void OnConfiguring(
+    /*protected override void OnConfiguring(
         DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer(@"Server=PHUCNV;Database=TatBlog;
 Trusted_Connection=True;MultipleActiveResultSets=true");
-    }
+    }*/
     protected override void OnModelCreating(ModelBuilder modelBuider)
     {
         modelBuider.ApplyConfigurationsFromAssembly(

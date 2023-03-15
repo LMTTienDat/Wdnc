@@ -4,6 +4,9 @@ using TatBlog.Core.Entities;
 using TatBlog.Services.Blogs;
 using TatBlog.WebApp.Areas.Admin.Models;
 using MapsterMapper;
+using TatBlog.Services.Media;
+using FluentValidation;
+
 
 namespace TatBlog.WebApp.Areas.Admin.Controllers
 {
@@ -11,10 +14,12 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IBlogRepository _blogRepository;
-        public PostsController(IBlogRepository blogRepository, IMapper mapper)
+        private readonly IMediaManager _mediaManager;
+        public PostsController(IBlogRepository blogRepository, IMapper mapper, IMediaManager mediaManager)
         {
             _blogRepository = blogRepository;
             _mapper = mapper;   
+            _mediaManager = mediaManager;
         }
         private async Task PopulatePostFilterModelAsync(PostFilterModel model)
         {
@@ -54,6 +59,72 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             return View(model);
         }
 
+        [HttpPost]
+
+        public async Task<IActionResult> Edit(
+            IValidator<PostEditModel> postValidator, 
+            PostEditModel model)
+        {
+            var validationResult = await postValidator.ValidateAsync(model);
+
+            if(!ModelState.IsValid)
+            {
+                await PopulatePostFilterModelAsync(model);
+                return View(model);
+            }
+
+            var post = model.Id > 0
+                ? await _blogRepository.GetPostByIdAsync(model.Id)
+                : null;
+
+            if(post == null)
+            {
+                post = _mapper.Map<Post>(model);
+                post.Id = 0;
+                post.PostedDate = DateTime.Now;
+            }
+            else
+            {
+                _mapper.Map<Post>(post);
+
+                post.Category = null;
+                post.ModifiedDate = DateTime.Now;
+            }
+
+            if (model.ImageFile?.Length > 0) 
+            {
+                var newImagePath = await _mediaManager.SaveFileAsync(
+                    model.ImageFile.OpenReadStream(),
+                    model.ImageFile.FileName,
+                    model.ImageFile.ContentType);
+                if (!string.IsNullOrWhiteSpace(newImagePath))
+                {
+                    await _mediaManager.DeleteFileAsync(post.ImageUrl);
+                    post.ImageUrl = newImagePath;
+                }
+            }
+
+            await _blogRepository.CreateOrUpdatePostAsync(post, model.GetSelectedTags());
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        private Task PopulatePostFilterModelAsync(PostEditModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> VerifyPostSlug(int id, string urlSlug)
+        {
+            var slugExistedd = await _blogRepository
+                .IsPostSlugExistedAsync(id, urlSlug);
+
+            return slugExistedd
+                ? Json($"Slug '{urlSlug}' đã được sửa dụng")
+                : Json(true);
+        }
         private IActionResult View(PostFilterModel model)
         {
             throw new NotImplementedException();

@@ -7,7 +7,7 @@ using System.Linq.Dynamic.Core;
 using TatBlog.Core.Collections;
 using Microsoft.EntityFrameworkCore;
 using TatBlog.Core.Contracts;
-using static TatBlog.Core.Contracts.IPagedList;
+
 
 namespace TatBlog.Services.Extensions
 {

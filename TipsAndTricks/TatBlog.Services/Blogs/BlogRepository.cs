@@ -9,7 +9,7 @@ using TatBlog.Core.DTO;
 using TatBlog.Data.Contexts;
 using TatBlog.Core.Contracts;
 using TatBlog.Services.Extensions;
-using static TatBlog.Core.Contracts.IPagedList;
+
 
 namespace TatBlog.Services.Blogs
 {

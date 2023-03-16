@@ -8,5 +8,5 @@ namespace TatBlog.Data.Seeders;
 
 public interface IDataSeeder
 {
-    void Intitialize();
+    void Initialize();
 }

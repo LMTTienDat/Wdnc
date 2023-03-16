@@ -18,12 +18,12 @@ public interface IBlogRepository
         string slug,
         CancellationToken cancellationToken = default);
 
-    Task<List<Post>> GetPopularArticlesAsync(
+    Task<IList<Post>> GetPopularArticlesAsync(
         int numPosts,
         CancellationToken cancellationToken = default);
     Task<Post> GetPostByIdAsync(
-       int id,
-       bool v,
+       int postId,
+       bool includeDetails = false,
         CancellationToken cancellationToken = default);
 
     Task<bool> IsPostSlugExistedAsync(
@@ -34,8 +34,9 @@ public interface IBlogRepository
         int postId,
         CancellationToken cancellationToken = default);
 
-    Task CreateOrUpdatePostAsync(
-     int postId,
+    Task<Post> CreateOrUpdatePostAsync(
+     Post post,
+     IEnumerable<string> tags,
      CancellationToken cancellationToken = default);
 
     Task<IList<CategoryItem>> GetCategoriesAsync(

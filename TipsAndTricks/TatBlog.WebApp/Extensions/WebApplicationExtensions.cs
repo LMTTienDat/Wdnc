@@ -62,7 +62,7 @@ public static class WebApplicationExtensions
         {
             scope.ServiceProvider
                 .GetRequiredService<IDataSeeder>()
-                .Intitialize();
+                .Initialize();
         }
         catch (Exception ex)
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SlugGenerator;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TatBlog.Core.Entities;
@@ -43,18 +44,6 @@ namespace TatBlog.Services.Blogs
                 postsQuery = postsQuery.Where(x => x.UrlSlug == slug);
             }
             return await postsQuery.FirstOrDefaultAsync(cancellationToken);
-        }
-
-        public async Task<IList<Post>> GetPopularArticlesAsync(
-            int numPost,
-            CancellationToken cancellationToken = default)
-        {
-            return await _context.Set<Post>()
-                .Include(x => x.Author)
-                .Include(x => x.Category)
-                .OrderByDescending(x => x.ViewCount)
-                .Take(numPost)
-                .ToListAsync(cancellationToken);
         }
 
         public async Task<bool> IsPostSlugExistedAsync(
@@ -212,53 +201,109 @@ namespace TatBlog.Services.Blogs
                 cancellationToken);
         }
 
-        public async Task<Post> GetPostByIdAsync(
-            int id,
-            bool v,
-            CancellationToken cancellationToken = default)
+        public async Task<Tag> GetTagAsync(
+        string slug, CancellationToken cancellationToken = default)
         {
-            IQueryable<Post> postsQuery = _context.Set<Post>();
-            if (id > 0)
-            {
-                postsQuery = postsQuery.Where(x => x.Id == id);
-            }
-            return await postsQuery.FirstOrDefaultAsync(cancellationToken);
-
+            return await _context.Set<Tag>()
+                .FirstOrDefaultAsync(x => x.UrlSlug == slug, cancellationToken);
         }
 
         public async Task<Post> CreateOrUpdatePostAsync(
-           int postId,
-           CancellationToken cancellationToken = default)
+        Post post, IEnumerable<string> tags,
+        CancellationToken cancellationToken = default)
         {
-            IQueryable<Post> postsQuery = _context.Set<Post>();
-            if (postId > 0)
+            if (post.Id > 0)
             {
-                postsQuery = postsQuery.Where(x => x.Id == postId);
+                await _context.Entry(post).Collection(x => x.Tags).LoadAsync(cancellationToken);
             }
-            return await postsQuery.FirstOrDefaultAsync(cancellationToken);
+            else
+            {
+                post.Tags = new List<Tag>();
+            }
 
+            var validTags = tags.Where(x => !string.IsNullOrWhiteSpace(x))
+                .Select(x => new
+                {
+                    Name = x,
+                    Slug = x.GenerateSlug()
+                })
+                .GroupBy(x => x.Slug)
+                .ToDictionary(g => g.Key, g => g.First().Name);
+
+
+            foreach (var kv in validTags)
+            {
+                if (post.Tags.Any(x => string.Compare(x.UrlSlug, kv.Key, StringComparison.InvariantCultureIgnoreCase) == 0)) continue;
+
+                var tag = await GetTagAsync(kv.Key, cancellationToken) ?? new Tag()
+                {
+                    Name = kv.Value,
+                    Description = kv.Value,
+                    UrlSlug = kv.Key
+                };
+
+                post.Tags.Add(tag);
+            }
+
+            post.Tags = post.Tags.Where(t => validTags.ContainsKey(t.UrlSlug)).ToList();
+
+            if (post.Id > 0)
+                _context.Update(post);
+            else
+                _context.Add(post);
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return post;
         }
 
-
-
-        Task<List<Post>> IBlogRepository.GetPopularArticlesAsync(int numPosts, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
 
         public Task<IList<CategoryItem>> GetCategoriesAsync(bool showOnMenu = false, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
-
-        public Task<IPagedList<TagItem>> GetPagedTagsAsync(IPagingParams pagingParams, CancellationToken cancellationToken = default)
+        public async Task<IPagedList<TagItem>> GetPagedTagsAsync(
+         IPagingParams pagingParams, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var tagQuery = _context.Set<Tag>()
+                .OrderBy(x => x.Name)
+                .Select(x => new TagItem()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    UrlSlug = x.UrlSlug,
+                    Description = x.Description,
+                    PostCount = x.Posts.Count(p => p.Published)
+                });
+
+            return await tagQuery.ToPagedListAsync(pagingParams, cancellationToken);
+        }
+        public async Task<Post> GetPostByIdAsync(
+		int postId, bool includeDetails = false,
+		CancellationToken cancellationToken = default)
+	{
+		if (!includeDetails)
+		{
+			return await _context.Set<Post>().FindAsync(postId);
+		}
+
+		return await _context.Set<Post>()
+			.Include(x => x.Category)
+			.Include(x => x.Author)
+			.Include(x => x.Tags)
+			.FirstOrDefaultAsync(x => x.Id == postId, cancellationToken);
+	}
+
+        public async Task<IList<Post>> GetPopularArticlesAsync(
+        int numPosts, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Post>()
+                .Include(x => x.Author)
+                .Include(x => x.Category)
+                .OrderByDescending(p => p.ViewCount)
+                .Take(numPosts)
+                .ToListAsync(cancellationToken);
         }
 
-        Task IBlogRepository.CreateOrUpdatePostAsync(int postId, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

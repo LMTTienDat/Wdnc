@@ -12,7 +12,7 @@ using TatBlog.Data.Contexts;
 namespace TatBlog.Data.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    [Migration("20230309165500_InitialCreate")]
+    [Migration("20230316124442_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -130,7 +130,6 @@ namespace TatBlog.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)");
 

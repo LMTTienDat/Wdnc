@@ -33,12 +33,6 @@ namespace TatBlog.WebApp.Controllers
             return View(postsList);
         }
 
-        public IActionResult Index()
-        {
-            ViewBag.CurrenTime = DateTime.Now.ToString("HH:mm:ss");
-            return View();
-        }
-
         public IActionResult About()
             => View();
         public IActionResult Contact()

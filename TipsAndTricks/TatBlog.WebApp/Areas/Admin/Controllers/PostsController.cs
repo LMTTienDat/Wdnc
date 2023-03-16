@@ -44,10 +44,10 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             return View(model);
         }
         [HttpGet]
-        public async Task<IActionResult> Edit(int id =0) 
+        public async Task<IActionResult> Edit(int id = 0)
         {
-            var post = id >0
-                ?await _blogRepository.GetPostByIdAsync(id, true)
+            var post = id > 0
+                ? await _blogRepository.GetPostByIdAsync(id, true)
                 : null;
 
             var model = post == null
@@ -104,7 +104,7 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
                 }
             }
 
-            await _blogRepository.CreateOrUpdatePostAsync(post, model.GetSelectedTags());
+            //await _blogRepository.CreateOrUpdatePostAsync(post, model.GetSelectedTags());
 
             return RedirectToAction(nameof(Index));
         }
@@ -125,9 +125,6 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
                 ? Json($"Slug '{urlSlug}' đã được sửa dụng")
                 : Json(true);
         }
-        private IActionResult View(PostFilterModel model)
-        {
-            throw new NotImplementedException();
-        }
+ 
     }
 }

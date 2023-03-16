@@ -19,12 +19,17 @@ public static IEndpointRouteBuilder UseBlogRoutes(
     endpoints.MapControllerRoute(
         name: "single-post",
         pattern: "blog/post/{year:int}/{month:int}/{day:int}/{slug}",
-        defaults: new { area = "Admin" });
+        defaults: new { controller = "Blog", action = "Post" });
 
-    endpoints.MapControllerRoute(
+        endpoints.MapControllerRoute(
+        name: "post-by-author",
+        pattern: "blog/author/{slug}",
+        defaults: new { controller = "Blog", action = "author" });
+
+        endpoints.MapControllerRoute(
         name: "admin-area",
         pattern: "admin/{controller=Dashboard}/{action=Index}/{id?}",
-        defaults: new { controller = "Blog", action = "Post" });
+        defaults: new { area = "Admin" });
 
 
         endpoints.MapControllerRoute(

@@ -39,6 +39,14 @@ public interface IBlogRepository
      IEnumerable<string> tags,
      CancellationToken cancellationToken = default);
 
+    Task<IList<CategoryItem>> GetCategoryItemsAsync(
+     bool showOnMenu = false,
+     CancellationToken cancellationToken = default);
+
+    Task<IPagedList<TagItem>> GetPagedTagAsync(
+     IPagingParams pagingParams,
+     CancellationToken cancellationToken = default);
+
     Task<IList<CategoryItem>> GetCategoriesAsync(
         bool showOnMenu = false,
         CancellationToken cancellationToken = default);

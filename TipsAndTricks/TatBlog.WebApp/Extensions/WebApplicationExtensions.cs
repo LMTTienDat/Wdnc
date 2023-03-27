@@ -4,7 +4,7 @@ using TatBlog.Data.Contexts;
 using TatBlog.Data.Seeders;
 using TatBlog.Services.Blogs;
 using TatBlog.Services.Media;
-using TatBlog.WebApp.Middlewares;
+//using TatBlog.WebApp.Middlewares;
 
 namespace TatBlog.WebApp.Extensions;
 public static class WebApplicationExtensions
@@ -59,7 +59,7 @@ public static class WebApplicationExtensions
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
-        app.UseMiddleware<UserActivityMiddleware>();
+     //   app.UseMiddleware<UserActivityMiddleware>();
 
         return app;
     }

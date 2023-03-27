@@ -24,11 +24,11 @@ namespace TatBlog.WebApp.Validations
 
             RuleFor(x => x.Meta)
                 .NotEmpty()
-                .MaximumLength(1000);
+                .MaximumLength(500);
 
             RuleFor(x => x.UrlSlug)
                 .NotEmpty()
-                .MaximumLength(1000);
+                .MaximumLength(500);
 
             RuleFor(x => x.UrlSlug)
                 .MustAsync(async (postModel, slug, CancellationToken) =>

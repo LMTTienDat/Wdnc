@@ -16,6 +16,7 @@ namespace TatBlog.WebApp.Mapsters
 
             config.NewConfig<PostFilterModel, PostQuery>()
                 .Map(dest => dest.PublishedOnly, src => false);
+
             config.NewConfig<PostEditModel, Post>()
                 .Ignore(dest => dest.Id)
                 .Ignore(dest => dest.ImageUrl);

@@ -17,7 +17,8 @@ public interface IBlogRepository
         int month,
         string slug,
         CancellationToken cancellationToken = default);
-
+    Task<Tag> GetTagAsync(
+        string slug, CancellationToken cancellationToken = default);
     Task<IList<Post>> GetPopularArticlesAsync(
         int numPosts,
         CancellationToken cancellationToken = default);
@@ -42,20 +43,13 @@ public interface IBlogRepository
     Task<IList<CategoryItem>> GetCategoryItemsAsync(
      bool showOnMenu = false,
      CancellationToken cancellationToken = default);
+    Task<IList<AuthorItem>> GetAuthorItemsAsync(
+        CancellationToken cancellationToken = default);
 
     Task<IPagedList<TagItem>> GetPagedTagAsync(
      IPagingParams pagingParams,
      CancellationToken cancellationToken = default);
 
-    Task<IList<CategoryItem>> GetCategoriesAsync(
-        bool showOnMenu = false,
-        CancellationToken cancellationToken = default);
-    Task<IList<AuthorItem>> GetAuthorsAsync(
-            CancellationToken cancellationToken = default);
-
-    Task<IPagedList<TagItem>> GetPagedTagsAsync(
-        IPagingParams pagingParams,
-        CancellationToken cancellationToken = default);
     public Task<Tag> GetTagBySlugAsync(
             string slug,
             CancellationToken cancellationToken = default);

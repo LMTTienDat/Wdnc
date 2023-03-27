@@ -9,16 +9,15 @@ namespace TatBlog.WinApp
     {
         static void Main(string[] args)
         {
-            // var context = new BlogDbContext();
+            //var context = new BlogDbContext();
 
-            // InitDB(context);
+            //InitDB(context);
 
-            // XuatDanhSachTacGia(context);
-            // XuatDanhSachBaiViet(context);
-            // TimCacBaiVietDuocXemNhieuNhat(context, 3);
-            // XuatDanhSachDanhMuc(context);
-            // XuatDanhSachTheTheoPhanTrang(context);
-            // TimTagTheoSlug(context, "tag-19");
+            //XuatDanhSachTacGia(context);
+            //XuatDanhSachBaiViet(context);
+            //XuatDanhSachDanhMuc(context);
+            //XuatDanhSachTheTheoPhanTrang(context);
+            //TimTagTheoSlug(context, "tag-19");
             Console.ReadKey();
         }
 

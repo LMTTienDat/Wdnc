@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +42,7 @@ namespace TatBlog.Services.Media
                     fullPath, FileMode.Create);
                 await buffer.CopyToAsync(fileStream, cancellationToken);
 
-                return (string)returnedFilePath;
+                return returnedFilePath;
             }
             catch (Exception ex)
             {
@@ -51,10 +52,6 @@ namespace TatBlog.Services.Media
 
         }
 
-        private object CreateFilePath(string fileExt, string v)
-        {
-            throw new NotImplementedException();
-        }
 
         public Task<bool> DeleteFileAsync(
         string filePath,
@@ -77,8 +74,8 @@ namespace TatBlog.Services.Media
                 }
         }
 
-        private string CreateeFilePath(
-            string fileExt, string contentType =null)
+        private string CreateFilePath(
+            string fileExt, string contentType = null)
         {
             return string.Format(PicturesFolder,
                 Guid.NewGuid().ToString("N"), fileExt);

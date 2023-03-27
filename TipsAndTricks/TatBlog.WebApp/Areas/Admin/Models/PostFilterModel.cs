@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel;
 using System.Globalization;
+using System.ComponentModel.DataAnnotations;
 
 namespace TatBlog.WebApp.Areas.Admin.Models
 {

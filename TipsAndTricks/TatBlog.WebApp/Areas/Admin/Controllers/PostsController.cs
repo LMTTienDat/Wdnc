@@ -6,7 +6,9 @@ using TatBlog.WebApp.Areas.Admin.Models;
 using MapsterMapper;
 using TatBlog.Services.Media;
 using FluentValidation;
-
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
+using TatBlog.WebApp.Validations;
 
 namespace TatBlog.WebApp.Areas.Admin.Controllers
 {
@@ -16,6 +18,7 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
         private readonly IBlogRepository _blogRepository;
         private readonly ILogger<PostsController> _logger;
         private readonly IMediaManager _mediaManager;
+
         public PostsController(IBlogRepository blogRepository,ILogger<PostsController> logger , IMapper mapper, IMediaManager mediaManager)
         {
             _blogRepository = blogRepository;
@@ -25,25 +28,47 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
         }
         private async Task PopulatePostFilterModelAsync(PostFilterModel model)
         {
-            var authors = await _blogRepository.GetAuthorsAsync();
-            var categories = await _blogRepository.GetCategoriesAsync();
+            var authors = await _blogRepository.GetAuthorItemsAsync();
+            var categories = await _blogRepository.GetCategoryItemsAsync();
 
-            model.AuthorList = authors.Select(c => new SelectListItem()
+            model.AuthorList = authors.Select(a => new SelectListItem()
+            {
+                Text = a.FullName,
+                Value = a.Id.ToString()
+            });
+            model.CategoryList = categories.Select(c => new SelectListItem()
             {
                 Text = c.Name,
                 Value = c.Id.ToString()
             });
         }
+
+       private async Task PopulatePostEditModelAsync(PostEditModel model)
+        {
+            var authors = await _blogRepository.GetAuthorItemsAsync();
+            var categories = await _blogRepository.GetCategoryItemsAsync();
+
+            model.AuthorList = authors.Select(a => new SelectListItem()
+            {
+                Text = a.FullName,
+                Value = a.Id.ToString()
+            });
+            model.CategoryList = categories.Select(c => new SelectListItem()
+            {
+                Text = c.Name,
+                Value = c.Id.ToString()
+            });
+        }
+
+
+
         public async Task<IActionResult>Index(PostFilterModel model)
         {
-            _logger.LogInformation("Tạo điều kiện truy vấn");
             var postQuery = _mapper.Map<PostQuery>(model);
 
-            _logger.LogInformation("Lấy danh sách bài viết từ CSDL");
 
             ViewBag.PostsList = await _blogRepository
                 .GetPagedPostsAsync(postQuery, 1, 10);
-            _logger.LogInformation("Chuẩn bọ dữ liệu cho ViewModel");
 
             await PopulatePostFilterModelAsync(model);
 
@@ -60,22 +85,29 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
                 ? new PostEditModel()
                 : _mapper.Map<PostEditModel>(post);
 
-            await PopulatePostFilterModelAsync(model);
+            await PopulatePostEditModelAsync(model);
 
             return View(model);
         }
 
+
         [HttpPost]
-
+        
         public async Task<IActionResult> Edit(
-            IValidator<PostEditModel> postValidator, 
-            PostEditModel model)
+            IValidator<PostEditModel> postValidator,
+            PostEditModel model)  
+            
         {
+            
             var validationResult = await postValidator.ValidateAsync(model);
-
-            if(!ModelState.IsValid)
+            if (!validationResult.IsValid)
             {
-                await PopulatePostFilterModelAsync(model);
+                validationResult.AddToModelState(ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                await PopulatePostEditModelAsync(model);
                 return View(model);
             }
 
@@ -83,7 +115,7 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
                 ? await _blogRepository.GetPostByIdAsync(model.Id)
                 : null;
 
-            if(post == null)
+            if (post == null)
             {
                 post = _mapper.Map<Post>(model);
                 post.Id = 0;
@@ -91,13 +123,13 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             }
             else
             {
-                _mapper.Map<Post>(post);
+                _mapper.Map(model, post);
 
                 post.Category = null;
                 post.ModifiedDate = DateTime.Now;
             }
 
-            if (model.ImageFile?.Length > 0) 
+            if (model.ImageFile?.Length > 0)
             {
                 var newImagePath = await _mediaManager.SaveFileAsync(
                     model.ImageFile.OpenReadStream(),
@@ -110,14 +142,9 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
                 }
             }
 
-            //await _blogRepository.CreateOrUpdatePostAsync(post, model.GetSelectedTags());
+            await _blogRepository.CreateOrUpdatePostAsync(post, model.GetSelectedTags());
 
             return RedirectToAction(nameof(Index));
-        }
-
-        private Task PopulatePostFilterModelAsync(PostEditModel model)
-        {
-            throw new NotImplementedException();
         }
 
         [HttpPost]
@@ -131,6 +158,25 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
                 ? Json($"Slug '{urlSlug}' đã được sửa dụng")
                 : Json(true);
         }
- 
+
+        /* public async Task<IActionResult> Index(
+             [FromQuery(Name = "k")] string keyword = "",
+             [FromQuery(Name = "p")] int pageNumber = 1,
+             [FromQuery(Name = "ps")] int pageSize = 10)
+         {
+             var postQuery = new PostQuery()
+             {
+                 PublishedOnly = true,
+
+                 Keyword = keyword
+             };
+
+             var postsList = await _blogRepository.GetPagedPostsAsync(postQuery, pageNumber, pageSize);
+
+             ViewBag.PostQuery = postQuery;
+
+             return View(postsList);
+         }*/
+
     }
 }

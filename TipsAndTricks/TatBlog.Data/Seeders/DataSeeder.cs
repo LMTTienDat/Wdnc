@@ -77,9 +77,23 @@ public class DataSeeder : IDataSeeder
     {
         var categories = new List<Category>()
         {
-                new() { Name =".Net Core", Description =".Net Core", UrlSlug = "net-core", ShowOnMenu = true },
-                new() { Name ="Architecture", Description ="Architecture", UrlSlug = "architecture", ShowOnMenu = true},
-                new() { Name ="Messaging", Description ="Messaging", UrlSlug = "messaging", ShowOnMenu = true},
+               new() {Name = "Google", Description = "Google applications", UrlSlug="google-applications"},
+                new() {Name = "ASP.NET MVC", Description = "ASP.NET MVC", UrlSlug="asp.net-mvc"},
+                new() {Name = "Razor Page", Description = "Razor Page", UrlSlug="razor-page"},
+                new() {Name = "Blazor", Description = "Blazor", UrlSlug="blazor"},
+                new() {Name = "Neural Network", Description = "Neural Network", UrlSlug="neural-network"},
+                new() {Name = "JS", Description = "JavaScript", UrlSlug="javascript"},
+                new() {Name = "Golang", Description ="Golang", UrlSlug = "golang"},
+                new() {Name = "Dart", Description ="Dart", UrlSlug = "dart"},
+                new() {Name = "Blazor", Description = "Blazor", UrlSlug="blazor"},
+                new() {Name = "Neural Network", Description = "Neural Network", UrlSlug="neural-network"},
+                new() {Name = "Google", Description = "Google applications", UrlSlug="google-applications"},
+                new() {Name = "Ruby", Description ="Ruby", UrlSlug = "ruby"},
+                new() {Name = "Razor Page", Description = "Razor Page", UrlSlug="razor-page"},
+                new() {Name = "Blazor", Description = "Blazor", UrlSlug="blazor"},
+                new() {Name = "Neural Network", Description = "Neural Network", UrlSlug="neural-network"},
+                new() {Name = "Google", Description = "Google applications", UrlSlug="google-applications"},
+                new() {Name = "Messaging", Description ="Messaging", UrlSlug = "messaging"},
 
         };
 
@@ -157,7 +171,7 @@ public class DataSeeder : IDataSeeder
                     ModifiedDate = null,
                     ViewCount = 20,
                     Author = authors[1],
-                    Category = categories[1],
+                    Category = categories[2],
                     Tags = new List<Tag>()
                     {
                         tags[1]
@@ -174,8 +188,62 @@ public class DataSeeder : IDataSeeder
                     Published = true,
                     PostedDate = new DateTime(2019,5,24,6,29,6),
                     ModifiedDate = null,
-                    ViewCount = 20,
-                    Author = authors[1],
+                    ViewCount = 15,
+                    Author = authors[2],
+                    Category = categories[1],
+                    Tags = new List<Tag>()
+                    {
+                        tags[2]
+                    }
+                },
+             new()
+                {
+                    Title ="IPhone cũ đáng mua nhất hiện nay",
+                    ShortDescription = "IPhone cũ vẫn đang được nhiều người dùng công nghệ lựa chọn nhờ trải nghiệm ổn định cùng mức giá hợp lý",
+                    Description = "iPhone 11 Pro Max cũ là một trong những model bán chạy nhất trên thị trường iPhone cũ",
+                    Meta = "IPhone cũ đáng mua",
+                    UrlSlug = "Iphone-cu-dang-mua",
+                    Published = true,
+                    PostedDate = new DateTime(2019,5,24,6,29,6),
+                    ModifiedDate = null,
+                    ViewCount = 15,
+                    Author = authors[2],
+                    Category = categories[1],
+                    Tags = new List<Tag>()
+                    {
+                        tags[2]
+                    }
+                },
+              new()
+                {
+                    Title ="IPhone cũ đáng mua nhất hiện nay",
+                    ShortDescription = "IPhone cũ vẫn đang được nhiều người dùng công nghệ lựa chọn nhờ trải nghiệm ổn định cùng mức giá hợp lý",
+                    Description = "iPhone 11 Pro Max cũ là một trong những model bán chạy nhất trên thị trường iPhone cũ",
+                    Meta = "IPhone cũ đáng mua",
+                    UrlSlug = "Iphone-cu-dang-mua",
+                    Published = true,
+                    PostedDate = new DateTime(2019,5,24,6,29,6),
+                    ModifiedDate = null,
+                    ViewCount = 15,
+                    Author = authors[2],
+                    Category = categories[1],
+                    Tags = new List<Tag>()
+                    {
+                        tags[2]
+                    }
+                },
+               new()
+                {
+                    Title ="IPhone cũ đáng mua nhất hiện nay",
+                    ShortDescription = "IPhone cũ vẫn đang được nhiều người dùng công nghệ lựa chọn nhờ trải nghiệm ổn định cùng mức giá hợp lý",
+                    Description = "iPhone 11 Pro Max cũ là một trong những model bán chạy nhất trên thị trường iPhone cũ",
+                    Meta = "IPhone cũ đáng mua",
+                    UrlSlug = "Iphone-cu-dang-mua",
+                    Published = true,
+                    PostedDate = new DateTime(2019,5,24,6,29,6),
+                    ModifiedDate = null,
+                    ViewCount = 15,
+                    Author = authors[2],
                     Category = categories[1],
                     Tags = new List<Tag>()
                     {

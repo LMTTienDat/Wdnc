@@ -1,4 +1,4 @@
-﻿namespace TatBlog.WebApp.Middlewares
+﻿/*namespace TatBlog.WebApp.Middlewares
 {
     public class UserActivityMiddleware
     {
@@ -25,3 +25,4 @@
         }
     }
 }
+*/

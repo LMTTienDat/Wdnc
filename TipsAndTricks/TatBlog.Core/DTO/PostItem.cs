@@ -10,7 +10,7 @@ namespace TatBlog.Core.DTO
 {
     public class PostItem
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public string ShortDescription { get; set; }
         public string Description { get; set; }
@@ -22,7 +22,8 @@ namespace TatBlog.Core.DTO
         public DateTime PostedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public string CategoryName { get; set; }
+        public int AuthorId { get; set; }
         public string AuthorName { get; set; }
-        public IList<string> Tags { get; set; }
+        public IList<String> Tags { get; set; }
     }
 }

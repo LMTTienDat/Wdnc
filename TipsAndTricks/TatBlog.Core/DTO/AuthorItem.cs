@@ -8,7 +8,6 @@ namespace TatBlog.Core.DTO
 {
     public class AuthorItem
     {
-        public string Name;
 
         public int Id { get; set; }
         public string FullName { get; set; }
@@ -18,5 +17,6 @@ namespace TatBlog.Core.DTO
         public string Email { get; set; }
         public string Notes { get; set; }
         public int PostCount { get; set; }
+        public string Name { get; set; }
     }
 }

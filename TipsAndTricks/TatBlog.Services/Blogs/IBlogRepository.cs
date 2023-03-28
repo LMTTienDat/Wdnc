@@ -58,6 +58,7 @@ public interface IBlogRepository
     PostQuery postQuery,
     int pageNumber = 1,
     int pageSize = 10,
+    
     CancellationToken cancellationToken = default);
     
 }

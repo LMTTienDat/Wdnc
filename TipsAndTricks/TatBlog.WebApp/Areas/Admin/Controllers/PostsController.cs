@@ -9,6 +9,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using TatBlog.WebApp.Validations;
+using TatBlog.Core.Contracts;
 
 namespace TatBlog.WebApp.Areas.Admin.Controllers
 {
@@ -161,24 +162,24 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
                 : Json(true);
         }
 
-        /* public async Task<IActionResult> Index(
-             [FromQuery(Name = "k")] string keyword = "",
-             [FromQuery(Name = "p")] int pageNumber = 1,
-             [FromQuery(Name = "ps")] int pageSize = 10)
-         {
-             var postQuery = new PostQuery()
-             {
-                 PublishedOnly = true,
+/*        public async Task<IActionResult> Index(
+            [FromQuery(Name = "k")] string keyword = "",
+            [FromQuery(Name = "p")] int pageNumber = 1,
+            [FromQuery(Name = "ps")] int pageSize = 10)
+        {
+            var postQuery = new PostQuery()
+            {
+                PublishedOnly = true,
 
-                 Keyword = keyword
-             };
+                Keyword = keyword
+            };
 
-             var postsList = await _blogRepository.GetPagedPostsAsync(postQuery, pageNumber, pageSize);
+            var postsList = await _blogRepository.GetPagedPostsAsync(postQuery, pageNumber, pageSize);
 
-             ViewBag.PostQuery = postQuery;
+            ViewBag.PostQuery = postQuery;
 
-             return View(postsList);
-         }*/
+            return View(postsList);
+        }*/
 
     }
 }

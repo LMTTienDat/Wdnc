@@ -298,7 +298,7 @@ namespace TatBlog.Services.Blogs
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<IList<AuthorItem>> GetAuthorItemsAsync(CancellationToken cancellationToken = default)
+ /*       public async Task<IList<AuthorItem>> GetAuthorItemsAsync(CancellationToken cancellationToken = default)
         {
             IQueryable<Author> author = _context.Set<Author>();
             return await author
@@ -315,7 +315,7 @@ namespace TatBlog.Services.Blogs
                 PostCount = x.Posts.Count(p => p.Published)
             }).ToListAsync(cancellationToken);
 
-        }
+        }*/
     }
 }
 

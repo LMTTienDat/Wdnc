@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 using TatBlog.Core.Collections;
@@ -6,7 +7,7 @@ using TatBlog.Core.DTO;
 using TatBlog.Core.Entities;
 using TatBlog.Services.Blogs;
 using TatBlog.Services.Media;
-using TatBlog.WebApi.Extensions;
+using TatBlog.WebApi.Filters;
 using TatBlog.WebApi.Models;
 
 namespace TatBlog.WebApi.Endpoints
@@ -37,8 +38,16 @@ namespace TatBlog.WebApi.Endpoints
                 .Produces<string>()
                 .Produces(400);
 
+            routeGroupBuilder.MapPost("/", AddAuthor)
+                .WithName("AddNewAuthor")
+                .AddEndpointFilter<ValidatorFilter<AuthorEditModel>>()
+                .Produces(201)
+                .Produces(400)
+                .Produces(409);
+
             routeGroupBuilder.MapPut("/{id:int}", UpdateAuthor)
                 .WithName("UpdateAuthor")
+                .AddEndpointFilter<ValidatorFilter<AuthorEditModel>>()
                 .Produces(204)
                 .Produces(400)
                 .Produces(409);
@@ -123,12 +132,6 @@ namespace TatBlog.WebApi.Endpoints
             IAuthorRepository authorRepository,
             IMapper mapper)
         {
-            var validationResult = await validator.ValidateAsync(model);
-
-            if (!validationResult.IsValid)
-            {
-                return Results.BadRequest(validationResult.Errors.ToResponse());
-            }
 
             if (await authorRepository
                 .IsAuthorSlugExistedAsync(0, model.UrlSlug))
@@ -169,13 +172,7 @@ namespace TatBlog.WebApi.Endpoints
             IAuthorRepository authorRepository,
             IMapper mapper)
         {
-            var validationResult = await validator.ValidateAsync(model);
-
-            if(!validationResult.IsValid)
-            {
-                return Results.BadRequest(
-                    validationResult.Errors.ToResponse() );
-            }
+          
             if(await authorRepository.IsAuthorSlugExistedAsync(id, model.UrlSlug))
             {
                 return Results.Conflict($"'{model.UrlSlug}' đã được sử dụng ");

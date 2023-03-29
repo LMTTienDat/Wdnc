@@ -60,5 +60,11 @@ public interface IBlogRepository
     int pageSize = 10,
     
     CancellationToken cancellationToken = default);
-    
+
+    Task<IPagedList<T>> GetPagedPostsAsync<T>(
+        PostQuery condition,
+        IPagingParams pagingParams,
+        Func<IQueryable<Post>, IQueryable<T>> mapper);
+
+
 }

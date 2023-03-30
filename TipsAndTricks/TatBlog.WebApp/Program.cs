@@ -1,5 +1,6 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using TatBlog.Data.Contexts;
+using Microsoft.Extensions.Configuration;
 using TatBlog.Data.Seeders;
 using TatBlog.Services.Blogs;
 using TatBlog.WebApp.Extensions;
@@ -15,6 +16,9 @@ var builder = WebApplication.CreateBuilder(args);
         .ConfigureNlog()
         .ConfigureFluentValidation();
 }
+
+/*builder.Services.AddDbContext<IAuthorRepository>(options =>
+   options.UseSqlServer(builder.Configuration.GetConnectionString()));*/
 
 var app = builder.Build();
 {

@@ -88,7 +88,7 @@ public class CategoryRepository : ICategoryRepository
         return Results.Ok(paginationResult);
     }*/
 
-    public async Task<IPagedList<Category>> GetCategoryByQueryAsync(CategoryQuery query, int pageNumber = 1, int pageSize = 10, CancellationToken cancellationToken = default)
+    public async Task<IPagedList<Category>> GetCategoryByQueryAsync(CategoryQuery query, int pageNumber = 1, int pageSize = 2, CancellationToken cancellationToken = default)
     {
         return await FilterCategories(query).ToPagedListAsync(
                                 pageNumber,

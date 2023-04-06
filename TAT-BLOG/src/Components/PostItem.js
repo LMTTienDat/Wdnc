@@ -31,6 +31,7 @@ const PostList = ({postItem}) => {
                                 {postItem.category.name}
                                 </span>
                             </Card.Text>
+                            <Card.Text>{postItem.shortDescription}</Card.Text>
                             <Card.Text>
                                 <div className="tag-list">
                                     <TagList tagList={postItem.tags}/>

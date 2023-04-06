@@ -20,7 +20,7 @@ public static class CategoryEndpoints
         // Nested Map with defined specific route
         routeGroupBuilder.MapGet("/", GetCategories)
                          .WithName("GetCategories")
-                         .Produces<ApiResponse<PaginationResult<CategoryItem>>>();
+                         .Produces<ApiResponse<CategoryItem>>();
 
         routeGroupBuilder.MapGet("/{id:int}", GetCategoryDetails)
                          .WithName("GetCategoryById")
@@ -51,11 +51,12 @@ public static class CategoryEndpoints
         return app;
     }
 
-    private static async Task<IResult> GetCategories(
-        IBlogRepository blogRepository)
+    private static async Task<IResult> GetCategories( ICategoryRepository categoryRepository, IMapper mapper)
     {
-        var categories = await blogRepository.GetCategoryItemsAsync();
-        return Results.Ok(ApiResponse.Success(categories));
+        var categoryList = await categoryRepository.GetCategoriesAsync();
+
+
+        return Results.Ok(ApiResponse.Success(categoryList));
     }
 
     private static async Task<IResult> GetCategoryDetails(int id, ICategoryRepository categoryRepository, IMapper mapper)
@@ -77,7 +78,7 @@ public static class CategoryEndpoints
 
         var paginationResult = new PaginationResult<PostDto>(postsList);
 
-        return Results.Ok(paginationResult);
+        return Results.Ok(ApiResponse.Success(paginationResult));
     }
 
     private static async Task<IResult> GetPostByCategorySlug([FromRoute] string slug, [AsParameters] PagingModel pagingModel, IBlogRepository blogRepository)
@@ -91,7 +92,7 @@ public static class CategoryEndpoints
 
         var paginationResult = new PaginationResult<PostDto>(postsList);
 
-        return Results.Ok(paginationResult);
+        return Results.Ok(ApiResponse.Success(paginationResult));
     }
 
     private static async Task<IResult> AddCategory(CategoryEditModel model, ICategoryRepository categoryRepository, IMapper mapper)

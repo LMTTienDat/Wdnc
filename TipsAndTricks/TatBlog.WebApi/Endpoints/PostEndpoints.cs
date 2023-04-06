@@ -2,7 +2,7 @@
 using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+
 using SlugGenerator;
 using System.Net;
 using TatBlog.Core.Collections;
@@ -63,24 +63,27 @@ namespace TatBlog.WebApi.Endpoints
                   .Accepts<IFormFile>("multipart/formdata")
                   .Produces(401)
                   .Produces<string>();
-           /* routeGroupBuilder.MapGet("/get-posts-filter", GetFilteredPosts)
+            /*routeGroupBuilder.MapGet("/get-posts-filter", GetFilteredPosts)
                     .WithName("GetFilteredPost")
                     .Produces<ApiResponse<PostDto>>();*/
 
-            routeGroupBuilder.MapGet("/get-filter", GetFilter)
+           /* routeGroupBuilder.MapGet("/get-filter", GetFilter)
             .WithName("GetFilter")
-            .Produces<ApiResponse<PostFilterModel>>();
+            .Produces<ApiResponse<PostFilterModel>>();*/
 
             return app;
         }
 
-        private static async Task<IResult> GetPosts([AsParameters] PostFilterModel model, IBlogRepository blogRepository, IMapper mapper)
+        public static async Task<IResult> GetPosts(
+       [AsParameters] PostFilterModel model,
+       IBlogRepository bolgRepository,
+       IMapper mapper)
         {
             var postQuery = mapper.Map<PostQuery>(model);
-            var postList = await blogRepository.GetPostByQueryAsync(postQuery, model, post => post.ProjectToType<PostItem>());
+            var postList = await bolgRepository
+                .GetPagedPostsAsync(postQuery, model, posts => posts.ProjectToType<PostDto>());
 
-            var paginationResult = new PaginationResult<PostItem>(postList);
-
+            var paginationResult = new PaginationResult<PostDto>(postList);
             return Results.Ok(ApiResponse.Success(paginationResult));
         }
 
@@ -179,7 +182,7 @@ namespace TatBlog.WebApi.Endpoints
             return await blogRepository.DeletePostByIdAsync(id) ? Results.Ok(ApiResponse.Success("Post is deleted", HttpStatusCode.NoContent)) : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Could not find post with id = {id}"));
         }
 
-        private static async Task<IResult> GetFilter(
+       /* private static async Task<IResult> GetFilter(
             IAuthorRepository authorRepository,
             IBlogRepository blogRepository)
         {
@@ -220,7 +223,7 @@ namespace TatBlog.WebApi.Endpoints
            posts.ProjectToType<PostDto>());
             var paginationResult = new PaginationResult<PostDto>(postsList);
             return Results.Ok(ApiResponse.Success(paginationResult));
-        }
+        }*/
 
         private static async Task<IResult> SetPostPicture(int id, IFormFile imageFile,
             IBlogRepository blogRepository,

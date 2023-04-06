@@ -3,7 +3,10 @@
     public class AuthorEditModel
     {
         public string FullName { get; set; }
-        
+
+        public string ShortDescription { get; set; }
+
+
         public string UrlSlug { get; set; }
 
         public DateTime JoinedDate { get; set; }

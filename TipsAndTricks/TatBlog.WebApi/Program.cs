@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
          .ConfifureServices()
          .ConfigureMapster()
          .ConfigureFluentValidation();
+         
 }
 
 

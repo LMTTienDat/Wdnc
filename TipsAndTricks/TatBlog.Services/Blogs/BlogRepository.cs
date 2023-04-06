@@ -100,6 +100,8 @@ namespace TatBlog.Services.Blogs
                 .ToListAsync(cancellationToken);
         }
 
+
+
         public async Task<IPagedList<TagItem>> GetPagedTagAsync(
             IPagingParams pagingParams,
             CancellationToken cancellationToken = default)
@@ -218,8 +220,9 @@ namespace TatBlog.Services.Blogs
                 .FirstOrDefaultAsync(x => x.UrlSlug == slug, cancellationToken);
         }
 
+
         public async Task<Post> CreateOrUpdatePostAsync(
-        Post post, IEnumerable<string> tags,
+            Post post, IEnumerable<string> tags,
         CancellationToken cancellationToken = default)
         {
             if (post.Id > 0)
@@ -234,6 +237,7 @@ namespace TatBlog.Services.Blogs
             var validTags = tags.Where(x => !string.IsNullOrWhiteSpace(x))
                 .Select(x => new
                 {
+
                     Name = x,
                     Slug = x.GenerateSlug()
                 })

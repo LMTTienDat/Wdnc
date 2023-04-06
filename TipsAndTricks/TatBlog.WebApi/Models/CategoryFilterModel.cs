@@ -2,6 +2,6 @@
 {
     public class CategoryFilterModel : PagingModel
     {
-        public string ShowOnMenu { get; set; }
+        public bool ShowOnMenu { get; set; }
     }
 }

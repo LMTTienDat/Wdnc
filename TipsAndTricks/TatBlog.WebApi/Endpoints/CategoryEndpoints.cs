@@ -51,14 +51,11 @@ public static class CategoryEndpoints
         return app;
     }
 
-    private static async Task<IResult> GetCategories([AsParameters] CategoryFilterModel model, ICategoryRepository categoryRepository, IMapper mapper)
+    private static async Task<IResult> GetCategories(
+        IBlogRepository blogRepository)
     {
-        var categoryQuery = mapper.Map<CategoryQuery>(model);
-        var categoryList = await categoryRepository.GetCategoryByQueryAsync(categoryQuery, model, category => category.ProjectToType<CategoryItem>());
-
-        var paginationResult = new PaginationResult<CategoryItem>(categoryList);
-
-        return Results.Ok(paginationResult);
+        var categories = await blogRepository.GetCategoryItemsAsync();
+        return Results.Ok(ApiResponse.Success(categories));
     }
 
     private static async Task<IResult> GetCategoryDetails(int id, ICategoryRepository categoryRepository, IMapper mapper)
@@ -68,7 +65,7 @@ public static class CategoryEndpoints
         return category == null ? Results.NotFound($"Không tìm thấy chuyên mục có mã số {id}") : Results.Ok(mapper.Map<CategoryItem>(category));
     }
 
-/*    private static async Task<IResult> GetPostByCategoryId(int id, [AsParameters] PagingModel pagingModel, IBlogRepository blogRepository)
+    private static async Task<IResult> GetPostByCategoryId(int id, [AsParameters] PagingModel pagingModel, IBlogRepository blogRepository)
     {
         var postQuery = new PostQuery
         {
@@ -81,7 +78,7 @@ public static class CategoryEndpoints
         var paginationResult = new PaginationResult<PostDto>(postsList);
 
         return Results.Ok(paginationResult);
-    }*/
+    }
 
     private static async Task<IResult> GetPostByCategorySlug([FromRoute] string slug, [AsParameters] PagingModel pagingModel, IBlogRepository blogRepository)
     {

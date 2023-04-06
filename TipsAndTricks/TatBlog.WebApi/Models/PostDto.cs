@@ -1,7 +1,10 @@
-﻿namespace TatBlog.WebApi.Models
+﻿
+namespace TatBlog.WebApi.Models
 {
     public class PostDto
     {
+        public bool Published { get; set; }
+
         public int Id { get; set; }
 
         public string Title { get; set; }

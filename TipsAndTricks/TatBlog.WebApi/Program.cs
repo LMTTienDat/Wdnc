@@ -1,5 +1,4 @@
 
-
 using TatBlog.WebApi.Endpoints;
 using TatBlog.WebApi.Extensions;
 using TatBlog.WebApi.Mapsters;
@@ -22,7 +21,9 @@ var app = builder.Build();
 
     app.MapAuthorEndpoints();
 
-  app.MapCategoryEndpoints();
+    app.MapCategoryEndpoints();
+
+    app.MapPostEndpoints();
 
     app.Run();
 }

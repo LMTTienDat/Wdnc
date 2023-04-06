@@ -10,17 +10,31 @@ using TatBlog.Core.DTO;
 using TatBlog.Data.Contexts;
 using TatBlog.Core.Contracts;
 using TatBlog.Services.Extensions;
-
+using System.Globalization;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace TatBlog.Services.Blogs
 {
     public class BlogRepository : IBlogRepository
     {
         private readonly BlogDbContext _context;
+        private readonly BlogDbContext _blogContext;
+        private readonly IMemoryCache _memoryCache;
+        
+        private BlogDbContext context;
+
+        public BlogRepository(BlogDbContext context, BlogDbContext blogDbContext, IMemoryCache memoryCache)
+        {
+            _memoryCache = memoryCache;
+            _context = context;
+            
+        }
+
         public BlogRepository(BlogDbContext context)
         {
-            _context = context;
+            this.context = context;
         }
+
         public async Task<Post> GetPostAsync(
             int year,
             int month,
@@ -112,79 +126,77 @@ namespace TatBlog.Services.Blogs
 
             return await tagQuery.FirstOrDefaultAsync(cancellationToken);
         }
-        public IQueryable<Post> FilterPosts(PostQuery condition)
+        private IQueryable<Post> FilterPosts(PostQuery query)
         {
-            IQueryable<Post> posts = _context.Set<Post>()
-                .Include(x => x.Category)
-                .Include(x => x.Author)
-                .Include(x => x.Tags);
-            posts.ToList();
+            IQueryable<Post> postsQuery = _context.Set<Post>();
+               
+            
 
-            if (condition.PublishedOnly)
+            if (query.PublishedOnly)
             {
-                posts = posts.Where(x => x.Published == true);
+                postsQuery = postsQuery.Where(x => x.Published == true);
             }
 
-            if (condition.NotPublished)
+            if (query.NotPublished)
             {
-                posts = posts.Where(x => !x.Published);
+                postsQuery = postsQuery.Where(x => !x.Published);
             }
 
-            if (condition.CategoryId > 0)
+            if (query.CategoryId > 0)
             {
-                posts = posts.Where(x => x.CategoryId == condition.CategoryId);
+                postsQuery = postsQuery.Where(x => x.CategoryId == query.CategoryId);
             }
 
-            if (!string.IsNullOrWhiteSpace(condition.CategorySlug))
+            if (!string.IsNullOrWhiteSpace(query.CategorySlug))
             {
-                posts = posts.Where(x => x.Category.UrlSlug == condition.CategorySlug);
+                postsQuery = postsQuery.Where(x => x.Category.UrlSlug == query.CategorySlug);
             }
 
-            if (condition.AuthorId > 0)
+            if (query.AuthorId > 0)
             {
-                posts = posts.Where(x => x.AuthorId == condition.AuthorId);
+                postsQuery = postsQuery.Where(x => x.AuthorId == query.AuthorId);
             }
 
-            if (!string.IsNullOrWhiteSpace(condition.AuthorSlug))
+            if (!string.IsNullOrWhiteSpace(query.AuthorSlug))
             {
-                posts = posts.Where(x => x.Author.UrlSlug == condition.AuthorSlug);
+                postsQuery = postsQuery.Where(x => x.Author.UrlSlug == query.AuthorSlug);
             }
 
-            if (!string.IsNullOrWhiteSpace(condition.TagSlug))
+            if (!string.IsNullOrWhiteSpace(query.TagSlug))
             {
-                posts = posts.Where(x => x.Tags.Any(t => t.UrlSlug == condition.TagSlug));
+                postsQuery = postsQuery.Where(x => x.Tags.Any(t => t.UrlSlug == query.TagSlug));
             }
 
-            if (!string.IsNullOrWhiteSpace(condition.Tag))
+            if (!string.IsNullOrWhiteSpace(query.Tag))
             {
-                posts = posts.Where(x => x.Tags.Any(t => t.UrlSlug == condition.Tag));
+                postsQuery = postsQuery.Where(x => x.Tags.Any(t => t.UrlSlug == query.Tag));
             }
 
-            if (!string.IsNullOrWhiteSpace(condition.Keyword))
+            if (!string.IsNullOrWhiteSpace(query.Keyword))
             {
-                posts = posts.Where(x => x.Title.Contains(condition.Keyword) ||
-                                         x.ShortDescription.Contains(condition.Keyword) ||
-                                         x.Description.Contains(condition.Keyword) ||
-                                         x.Category.Name.Contains(condition.Keyword) ||
-                                         x.Tags.Any(t => t.Name.Contains(condition.Keyword)));
+                postsQuery = postsQuery.Where(x => x.Title.Contains(query.Keyword) ||
+                                         x.ShortDescription.Contains(query.Keyword) ||
+                                         x.Description.Contains(query.Keyword) ||
+                                         x.Category.Name.Contains(query.Keyword) ||
+                                         x.Tags.Any(t => t.Name.Contains(query.Keyword)));
             }   
 
-            if (condition.Year > 0)
+            if (query.Year > 0)
             {
-                posts = posts.Where(x => x.PostedDate.Year == condition.Year);
+                postsQuery = postsQuery.Where(x => x.PostedDate.Year == query.Year);
             }
 
-            if (condition.Month > 0)
+            if (query.Month > 0)
             {
-                posts = posts.Where(x => x.PostedDate.Month == condition.Month);
+                postsQuery = postsQuery.Where(x => x.PostedDate.Month == query.Month);
             }
 
-            if (!string.IsNullOrWhiteSpace(condition.TitleSlug))
+            if (!string.IsNullOrWhiteSpace(query.TitleSlug))
             {
-                posts = posts.Where(x => x.UrlSlug == condition.TitleSlug);
+                postsQuery = postsQuery.Where(x => x.UrlSlug == query.TitleSlug);
             }
 
-            return posts;
+            return postsQuery;
         }
 
         public async Task<IPagedList<Post>> GetPagedPostsAsync(
@@ -253,6 +265,27 @@ namespace TatBlog.Services.Blogs
             await _context.SaveChangesAsync(cancellationToken);
 
             return post;
+        }
+
+        public async Task<IList<CategoryItem>> GetCategoriesAsync(bool showOnMenu = false, CancellationToken cancellationToken = default)
+        {
+            IQueryable<Category> categories = _blogContext.Set<Category>().AsNoTracking();
+
+            if (showOnMenu)
+            {
+                categories = categories.Where(x => x.ShowOnMenu);
+            }
+
+            return await categories.OrderByDescending(x => x.Name)
+                                  .Select(x => new CategoryItem()
+                                  {
+                                      Id = x.Id,
+                                      Name = x.Name,
+                                      UrlSlug = x.UrlSlug,
+                                      Description = x.Description,
+                                      ShowOnMenu = x.ShowOnMenu,
+                                      PostCount = x.Posts.Count(p => p.Published)
+                                  }).ToListAsync(cancellationToken);
         }
         public async Task<IPagedList<Post>> GetPostByQueryAsync(PostQuery query, int pageNumber = 1, int pageSize = 10, CancellationToken cancellationToken = default)
         {
@@ -332,6 +365,63 @@ namespace TatBlog.Services.Blogs
             return await projectedPosts.ToPagedListAsync(pagingParams);
         }
 
+        public async Task<IList<Post>> GetRandomPostAsync(int limit, CancellationToken cancellationToken = default)
+        {
+            return await _blogContext.Set<Post>().OrderBy(p => Guid.NewGuid()).Take(limit).ToListAsync(cancellationToken);
+        }
+
+        public async Task<IList<DateItem>> GetArchivesPostAsync(int limit, CancellationToken cancellationToken = default)
+        {
+            var lastestMonths = await GetLatestMonthList(limit);
+
+            return await Task.FromResult(_blogContext.Set<Post>().AsEnumerable()
+                    .GroupBy(p => new
+                        {
+                            p.PostedDate.Month,
+                            p.PostedDate.Year
+                        })
+                        .Join(lastestMonths, d => d.Key.Month, m => m.Month,
+                        (postDate, monthGet) => new DateItem
+                        {
+                            Month = postDate.Key.Month,
+                            MonthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(postDate.Key.Month),
+                            Year = postDate.Key.Year,
+                            PostCount = postDate.Count()
+                        }).ToList());
+        }
+
+        public async Task<Post> GetCachedPostByIdAsync(int id, bool published = false, CancellationToken cancellationToken = default)
+        {
+            return await _memoryCache.GetOrCreateAsync(
+                $"post.by-id.{id}-{published}",
+                async (entry) =>
+                {
+                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30);
+                    return await GetPostByIdAsync(id, published, cancellationToken);
+                });
+        }
+
+        public async Task<IList<DateItem>> GetLatestMonthList(int limit)
+        {
+            return await Task.FromResult((from r in Enumerable.Range(1, 12) select DateTime.Now.AddMonths(limit - r))
+                                .Select(x => new DateItem
+                                {
+                                    Month = x.Month,
+                                    Year = x.Year
+                                }).ToList());
+        }
+
+
+        public async Task<bool> DeletePostByIdAsync(int? id, CancellationToken cancellationToken = default)
+        {
+            var post = await _blogContext.Set<Post>().FindAsync(id);
+
+            if (post is null) return false;
+
+            _blogContext.Set<Post>().Remove(post);
+            var rowsCount = await _blogContext.SaveChangesAsync(cancellationToken);
+            return rowsCount > 0;
+        }
     }
 }
 

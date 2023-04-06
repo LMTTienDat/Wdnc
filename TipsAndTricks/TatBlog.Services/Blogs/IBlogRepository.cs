@@ -58,7 +58,7 @@ public interface IBlogRepository
     PostQuery postQuery,
     int pageNumber = 1,
     int pageSize = 10,
-    
+
     CancellationToken cancellationToken = default);
 
     Task<IPagedList<T>> GetPagedPostsAsync<T>(
@@ -72,5 +72,10 @@ public interface IBlogRepository
 
     Task<IPagedList<T>> GetPostByQueryAsync<T>(PostQuery query, IPagingParams pagingParams, Func<IQueryable<Post>, IQueryable<T>> mapper, CancellationToken cancellationToken = default);
 
+    Task<IList<DateItem>> GetArchivesPostAsync(int limit, CancellationToken cancellationToken = default);
 
+    Task<Post> GetCachedPostByIdAsync(int id, bool published = false, CancellationToken cancellationToken = default);
+    Task<IList<Post>> GetRandomPostAsync(int limit, CancellationToken cancellationToken = default);
+
+    Task<bool> DeletePostByIdAsync(int? id, CancellationToken cancellationToken = default);
 }

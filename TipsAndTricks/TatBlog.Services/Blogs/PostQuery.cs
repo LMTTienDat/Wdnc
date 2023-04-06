@@ -12,9 +12,11 @@ namespace TatBlog.Services.Blogs
         public int? AuthorId { get; set; }
         public string CategorySlug { get; set; }
         public string TitleSlug { get; set; }
+
+        public string PostSlug { get; set; }
         public int? Year { get; set; }
         public int? Month { get; set; }
-
+        public int? PostId { get; set; }
         public string Tag{ get; set; }
 
         public string Keyword { get; set; }

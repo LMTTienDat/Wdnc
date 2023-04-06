@@ -5,7 +5,7 @@ export async function getPosts(keyword ='', pageSize = 10, pageNumber =
         try{
             const response = await
             // eslint-disable-next-line no-template-curly-in-string
-            axios.get('https://localhost:7281/api/posts?keyword=${keyword}&PageSize=${pageSize}&pageNumber=${pageNumber}&SortColumn=${sortColumn}&SortOrder=${sortOrder}');
+            axios.get( '`https://localhost:7281/api/posts?keyword=${keyword}&PageSize=${pageSize}&PageNumber=${pageNumber}&SortColumn=${sortColumn}&SortOrder=${sortOrder}');
             const data = response.data;
             if (data.isSuccess)
                 return data.result;

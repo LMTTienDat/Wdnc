@@ -1,24 +1,4 @@
-<<<<<<< Updated upstream
-import axios from 'axios';
 
-export async function getPosts(keyword ='', pageSize = 10, pageNumber =
-1, sortColumn='', sortOrder = '') {
-        try{
-            const response = await
-            // eslint-disable-next-line no-template-curly-in-string
-            axios.get( '`https://localhost:7281/api/posts?keyword=${keyword}&PageSize=${pageSize}&PageNumber=${pageNumber}&SortColumn=${sortColumn}&SortOrder=${sortOrder}');
-            const data = response.data;
-            if (data.isSuccess)
-                return data.result;
-            else
-                return null;
-        } catch (error) {
-            console.log('Error', error.message);
-            return null;
-        }
-    
-}
-=======
 import { get_api, post_api } from "./Methods";
 
 export function getPosts(
@@ -80,4 +60,4 @@ export async function getPostById(id = 0) {
 export function addOrUpdatePost(formData) {
   return post_api("https://localhost:7281/api/posts", formData);
 }
->>>>>>> Stashed changes
+

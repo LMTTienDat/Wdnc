@@ -1,23 +1,3 @@
-<<<<<<< Updated upstream
-/* eslint-disable no-unused-vars */
-//import logo from './logo.svg';
-import './App.css';
-import Navbar from './Components/Navbar';
-import Sidebar from './Components/Sidebar';
-import Footer from './Components/Footer';
-import Index from './Pages/Index';
-import About from './Pages/About';
-import Contact from './Pages/Contact';
-import RSS from './Pages/RSS';
-import Layout from './Pages/Layout';
-
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from 'react-router-dom'
-  
-=======
 import "./App.css";
 import Navbar from "./Components/Navbar";
 import Sidebar from "./Components/Sidebar";
@@ -38,10 +18,8 @@ import NotFound from './Pages/NotFound';
 import BadRequest from './Pages/BadRequest';
 import Edit from "./Pages/Admin/Post/Edit";
 
-
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
->>>>>>> Stashed changes
 function App() {
   return (
     <Router>

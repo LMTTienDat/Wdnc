@@ -1,7 +1,5 @@
 ﻿@using TatBlog.Core.Entities;
 
-
-
 @model Post
 
 @{
@@ -19,6 +17,7 @@
             </div>
             <div class="col-md-8">
                 <div class="card-body">
+
                     <a class="card-title"
                         asp-controller="Blog" 
                         asp-action="Post" 
@@ -35,26 +34,27 @@
                         </small>
                         <a asp-controller="Blog"
                            asp-action="Author"
-                           asp-route-slug="@Model.Author.UrlSlug"
+                           asp-route-slug="@Model.Author"
                            class="text-primary">
-                            @Model.Author.FullName
+                            @Model.Author
                         </a>
+
                         <small class="text-muted">
                             Chủ đề:
                         </small>
                         <a asp-controller="Blog"
                            asp-action="Category"
-                           asp-route-slug="@Model.Category.UrlSlug"
+                           asp-route-slug="@Model.Category"
                            class="text-primary">
-                            @Model.Category.Name
+                            @Model.Category
                         </a>
                     </p>
                     <p class="card-text">
                         @Html.Raw(Model.ShortDescription)
                     </p>
-                    <div class="tag-list">
+                    @*<div class="tag-list">
                         <partial name="_TagList" model="@Model.Tags" />
-                    </div>
+                    </div>*@
                     <div class="text-end">
                         <a asp-controller="Blog"
                             asp-action="Post"

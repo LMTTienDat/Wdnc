@@ -22,8 +22,8 @@ namespace TatBlog.WebApi.Endpoints
             var routeGroupBuilder = app.MapGroup("/api/posts");
 
             routeGroupBuilder.MapGet("/", GetPosts)
-                .WithName("GetPosts")
-                .Produces<ApiResponse<PaginationResult<PostItem>>>();
+                         .WithName("GetPosts")
+                         .Produces<ApiResponse<PaginationResult<PostItem>>>();
 
             routeGroupBuilder.MapGet("/featured/{limit:int}", GetFeaturedPost)
                 .WithName("GetFeaturedPost")
@@ -63,9 +63,13 @@ namespace TatBlog.WebApi.Endpoints
                   .Accepts<IFormFile>("multipart/formdata")
                   .Produces(401)
                   .Produces<string>();
+<<<<<<< Updated upstream
            /* routeGroupBuilder.MapGet("/get-posts-filter", GetFilteredPosts)
+=======
+            routeGroupBuilder.MapGet("/get-posts-filter", GetFilteredPosts)
+>>>>>>> Stashed changes
                     .WithName("GetFilteredPost")
-                    .Produces<ApiResponse<PostDto>>();*/
+                    .Produces<ApiResponse<PostDto>>();
 
             routeGroupBuilder.MapGet("/get-filter", GetFilter)
             .WithName("GetFilter")
@@ -74,12 +78,21 @@ namespace TatBlog.WebApi.Endpoints
             return app;
         }
 
+<<<<<<< Updated upstream
         private static async Task<IResult> GetPosts([AsParameters] PostFilterModel model, IBlogRepository blogRepository, IMapper mapper)
         {
             var postQuery = mapper.Map<PostQuery>(model);
             var postList = await blogRepository.GetPostByQueryAsync(postQuery, model, post => post.ProjectToType<PostItem>());
 
             var paginationResult = new PaginationResult<PostItem>(postList);
+=======
+        private static async Task<IResult> GetPosts([AsParameters] PagingModel model, IBlogRepository blogRepository, IMapper mapper)
+        {
+            var postQuery = mapper.Map<PostQuery>(model);
+            var postsList = await blogRepository.GetPostByQueryAsync(postQuery, model, posts => posts.ProjectToType<PostDto>());
+
+            var paginationResult = new PaginationResult<PostDto>(postsList);
+>>>>>>> Stashed changes
 
             return Results.Ok(ApiResponse.Success(paginationResult));
         }

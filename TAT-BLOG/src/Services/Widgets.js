@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import axios from 'axios';
 
 export async function getCategories() {
@@ -13,4 +14,9 @@ axios.get('https://localhost:7281/api/categories');
         console.log('Error', error.message);
     return null;
     }
+=======
+import { get_api } from './Methods';
+export function getCategories() {
+ return get_api(`https://localhost:7281/api/categories`);
+>>>>>>> Stashed changes
 }

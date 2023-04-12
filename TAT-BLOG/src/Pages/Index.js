@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import PostItem from '../Components/PostItem';
 import Pager from '../Components/Pager'; 
 import { getPosts } from '../Services/BlogRepository';
+import {useQuery} from "../Utils/Utils";
 
 const Index = () => {
     const [postList, setPostList] = useState([]);

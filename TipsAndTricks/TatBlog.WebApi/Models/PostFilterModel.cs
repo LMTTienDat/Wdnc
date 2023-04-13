@@ -1,22 +1,10 @@
-<<<<<<< Updated upstream
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel;
 using System.Globalization;
-=======
-﻿
-
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.ComponentModel;
-using System.Globalization;
-
->>>>>>> Stashed changes
-namespace TatBlog.WebApi.Models;
+﻿namespace TatBlog.WebApi.Models;
 public class PostFilterModel
 {
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
     [DisplayName("Từ khóa")]
     public string Keyword { get; set; }
     [DisplayName("Tác giả")]
@@ -27,10 +15,7 @@ public class PostFilterModel
     public int? Year { get; set; }
     [DisplayName("Tháng")]
     public int? Month { get; set; }
-<<<<<<< Updated upstream
-=======
-    
->>>>>>> Stashed changes
+
     public IEnumerable<SelectListItem> AuthorList { get; set; }
     public IEnumerable<SelectListItem> CategoryList { get; set; }
     public IEnumerable<SelectListItem> MonthList { get; set; }

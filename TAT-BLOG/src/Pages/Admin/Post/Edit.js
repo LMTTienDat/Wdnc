@@ -79,7 +79,7 @@ const Edit = () => {
     <>
       <Form method="post" encType="multipart/form-data" onSubmit={handleSubmit}
       noValidate
-      validated={validated}  >
+      validated={validated}>
         <Form.Control.Feedback type='invalid'>
             Không được bỏ trống.
         </Form.Control.Feedback>

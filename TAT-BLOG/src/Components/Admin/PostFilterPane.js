@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -24,6 +25,25 @@ const PostFilterPane = () => {
   const handleReset = (e) => {
     dispatch(reset());
   };
+
+  useEffect(() => {
+    getFilter().then((data) => {
+      if (data) {
+        setFilter({
+          authorList: data.authorList,
+          categoryList: data.categoryList,
+          monthList: data.monthList,
+        });
+      } else {
+        setFilter({
+          authorList: [],
+          categoryList: [],
+          monthList: [],
+        });
+      }
+    })
+  }, [])
+
   return (
     <Form
       method="get"

@@ -32,7 +32,7 @@ namespace TatBlog.WebApi.Extensions
         {
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("TatBlofApp", policyBuilder =>
+                options.AddPolicy("TatBlogApp", policyBuilder =>
                 policyBuilder
                 .AllowAnyOrigin()
                 .AllowAnyHeader()

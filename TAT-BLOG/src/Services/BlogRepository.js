@@ -2,14 +2,14 @@
 import { get_api, post_api } from "./Methods";
 
 export function getPosts(
-  keyword = "",
-  pageSize = 10,
+  keyword='',
+  pageSize = 2,
   pageNumber = 1,
   sortColumn = "",
   sortOrder = ""
 ) {
   return get_api(
-    `https://localhost:7281/api/posts?keyword=${keyword}&PageSize=${pageSize}&PageNumber=${pageNumber}&SortColumn=${sortColumn}&SortOrder=${sortOrder}`
+    `https://localhost:7281/api/posts?&PageSize=${pageSize}&PageNumber=${pageNumber}&SortColumn=${sortColumn}&SortOrder=${sortOrder}`
   );
 }
 

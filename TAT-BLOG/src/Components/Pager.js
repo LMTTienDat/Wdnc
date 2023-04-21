@@ -11,14 +11,13 @@ const Pager = ({ postquery, metadata }) => {
         pageSize = metadata.pageSize,
         actionName = '', slug = '',
         
-        keyword = postquery.keyword ?? '';
+        keyword = postquery.keyword ?? "";
     if (pageCount > 1) {
         return (
             <div className='text-center my-4'>
                 {hasPreviousPage
                     ? <Link
-                to={`/blog/${actionName}?slug=${slug}&k=${keyword}
-    &p=${pageNumber - 1}&ps=${pageSize}`}
+                to={`/blog/${actionName}?slug=${slug}&k=${keyword}&p=${pageNumber - 1}&ps=${pageSize}`}
                 className='btn btn-info'>
                 <FontAwesomeIcon icon={faArrowLeft} />
                 &nbsp;Trang trước

@@ -14,9 +14,9 @@ const Index = () => {
         return React.useMemo(() => new URLSearchParams(search), [search]);
         }
     let query = useQuery(),
-        k = query.get('k') ?? '',
+        k = query.get('k') ?? "",
         p = query.get('p') ?? 1,
-        ps = query.get('ps') ?? 2; 
+        ps = query.get('ps') ?? 5; 
        
         
     useEffect (() => {

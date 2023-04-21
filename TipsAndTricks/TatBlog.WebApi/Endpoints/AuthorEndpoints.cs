@@ -58,14 +58,10 @@ namespace TatBlog.WebApi.Endpoints
         }
 
         private static async Task<IResult> GetAuthors(
-            [AsParameters] AuthorFilterModel model,
-            IAuthorRepository authorRepository)
+            IBlogRepository blogRepository)
         {
-            var authorsList = await authorRepository.GetPagedAuthorsAsync(model,
-           model.Name);
-            var paginationResult = new
-           PaginationResult<AuthorItem>(authorsList);
-            return Results.Ok(ApiResponse.Success(paginationResult));
+            var authors = await blogRepository.GetAuthorsAsync();
+            return Results.Ok(ApiResponse.Success(authors));
         }
 
         private static async Task<IResult> GetAuthorDetails(

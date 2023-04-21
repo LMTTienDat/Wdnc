@@ -24,6 +24,7 @@ public class BlogDbContext : DbContext
     {
         optionsBuilder.UseSqlServer(@"Server=LMT;Database=DataBlog;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=False");
     }
+
     public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options) { }
     protected override void OnModelCreating(ModelBuilder modelBuider)
     {

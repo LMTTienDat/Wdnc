@@ -78,6 +78,13 @@ public interface IBlogRepository
     Task<IList<Post>> GetRandomPostAsync(int limit, CancellationToken cancellationToken = default);
 
     Task<bool> DeletePostByIdAsync(int? id, CancellationToken cancellationToken = default);
+<<<<<<< HEAD
 
     
+=======
+    Task<IList<AuthorItem>> GetAuthorsAsync(
+        CancellationToken cancellationToken = default);
+
+
+>>>>>>> Lab06-homework
 }

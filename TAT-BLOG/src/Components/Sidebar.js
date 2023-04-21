@@ -6,6 +6,7 @@ const Sidebar = () => {
     return (
         <div className="pt-4 ps-2">
             <SearchForm/>
+            
             <CategoriesWidget/>
 
             <h1>

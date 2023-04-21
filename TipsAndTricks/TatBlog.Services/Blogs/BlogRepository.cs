@@ -426,6 +426,24 @@ namespace TatBlog.Services.Blogs
             var rowsCount = await _blogContext.SaveChangesAsync(cancellationToken);
             return rowsCount > 0;
         }
+
+        public async Task<IList<AuthorItem>> GetAuthorsAsync(
+        CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Author>()
+                .OrderBy(a => a.FullName)
+                .Select(a => new AuthorItem()
+                {
+                    Id = a.Id,
+                    FullName = a.FullName,
+                    Email = a.Email,
+                    JoinedDate = a.JoinedDate,
+                    ImageUrl = a.ImageUrl,
+                    UrlSlug = a.UrlSlug,
+                    PostCount = a.Posts.Count(p => p.Published)
+                })
+                .ToListAsync(cancellationToken);
+        }
     }
 }
 

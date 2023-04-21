@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Configuration;
 using TatBlog.Data.Seeders;
 using TatBlog.Services.Blogs;
 using TatBlog.WebApp.Extensions;
@@ -17,8 +18,6 @@ var builder = WebApplication.CreateBuilder(args);
         .ConfigureFluentValidation();
 }
 
-/*builder.Services.AddDbContext<IAuthorRepository>(options =>
-   options.UseSqlServer(builder.Configuration.GetConnectionString()));*/
 
 var app = builder.Build();
 {
@@ -32,6 +31,7 @@ using (var scope = app.Services.CreateScope())
     var seeder = scope.ServiceProvider.GetRequiredService<IDataSeeder>();
     seeder.Initialize();
 }
+/*services.AddDbContext<IAuthorRepository>(Options => Options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));*/
 
 app.Run();
 

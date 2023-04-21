@@ -22,8 +22,8 @@ namespace TatBlog.WebApi.Endpoints
             var routeGroupBuilder = app.MapGroup("/api/posts");
 
             routeGroupBuilder.MapGet("/", GetPosts)
-                .WithName("GetPosts")
-                .Produces<ApiResponse<PaginationResult<PostItem>>>();
+                         .WithName("GetPosts")
+                         .Produces<ApiResponse<PaginationResult<PostItem>>>();
 
             routeGroupBuilder.MapGet("/featured/{limit:int}", GetFeaturedPost)
                 .WithName("GetFeaturedPost")
@@ -63,9 +63,17 @@ namespace TatBlog.WebApi.Endpoints
                   .Accepts<IFormFile>("multipart/formdata")
                   .Produces(401)
                   .Produces<string>();
+<<<<<<< HEAD
             /*routeGroupBuilder.MapGet("/get-posts-filter", GetFilteredPosts)
+=======
+
+          
+
+            routeGroupBuilder.MapGet("/get-posts-filter", GetFilteredPosts)
+
+>>>>>>> Lab06-homework
                     .WithName("GetFilteredPost")
-                    .Produces<ApiResponse<PostDto>>();*/
+                    .Produces<ApiResponse<PostDto>>();
 
            /* routeGroupBuilder.MapGet("/get-filter", GetFilter)
             .WithName("GetFilter")
@@ -74,6 +82,7 @@ namespace TatBlog.WebApi.Endpoints
             return app;
         }
 
+<<<<<<< HEAD
         public static async Task<IResult> GetPosts(
        [AsParameters] PostFilterModel model,
        IBlogRepository bolgRepository,
@@ -82,6 +91,16 @@ namespace TatBlog.WebApi.Endpoints
             var postQuery = mapper.Map<PostQuery>(model);
             var postList = await bolgRepository
                 .GetPagedPostsAsync(postQuery, model, posts => posts.ProjectToType<PostDto>());
+=======
+
+        private static async Task<IResult> GetPosts([AsParameters] PagingModel model, IBlogRepository blogRepository, IMapper mapper)
+        {
+            var postQuery = mapper.Map<PostQuery>(model);
+            var postsList = await blogRepository.GetPostByQueryAsync(postQuery, model, posts => posts.ProjectToType<PostDto>());
+
+            var paginationResult = new PaginationResult<PostDto>(postsList);
+
+>>>>>>> Lab06-homework
 
             var paginationResult = new PaginationResult<PostDto>(postList);
             return Results.Ok(ApiResponse.Success(paginationResult));

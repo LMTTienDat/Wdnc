@@ -3,6 +3,7 @@ import {useLocation} from 'react-router-dom';
 import PostItem from '../Components/PostItem';
 import Pager from '../Components/Pager';
 import { getPosts } from '../Services/BlogRepository';
+import {useQuery} from "../Utils/Utils";
 
 const Index = () => {
     const [postList, setPostList] = useState([]);
@@ -15,10 +16,17 @@ const Index = () => {
         return React.useMemo(() => new URLSearchParams(search), [search]);
     }
     let query = useQuery(),
-        k = query.get('k') ?? '',
+        k = query.get('k') ?? "",
         p = query.get('p') ?? 1,
+<<<<<<< HEAD
         ps = query.get('ps') ?? 4;
     useEffect(() => {
+=======
+        ps = query.get('ps') ?? 5; 
+       
+        
+    useEffect (() => {
+>>>>>>> Lab06-homework
         document.title = 'Trang chủ';
         getPosts(k, ps, p).then(data => {
             if (data) {
